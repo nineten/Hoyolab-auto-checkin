@@ -138,7 +138,7 @@ class HoyolabClient:
                 logging.error(f"Check-in request failed for {account.nickname}: {e}")
                 return
         else:
-            logging.info(f"{data['main']}, You've already checked in today.")
+            logging.info(f"You've already checked in today, {data['main']}~")
 
 
 def send_discord_notification(webhook_url, account, reward):
