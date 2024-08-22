@@ -5,6 +5,9 @@ import time
 from datetime import datetime, timedelta, timezone
 from log import logging
 from discord_webhook import DiscordWebhook, DiscordEmbed
+from dotenv import load_dotenv
+
+load_dotenv()
 
 GAME_DATA = {
     "hk4e_global": {
