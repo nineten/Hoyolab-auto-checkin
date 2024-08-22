@@ -157,7 +157,7 @@ class HoyolabClient(ApiClient):
 
     def check_in(self, account):
         if account.get_game_biz() not in GAME_DATA:
-            raise Exception(f"Unsupported game")
+            raise Exception("Unsupported game")
 
         data = GAME_DATA[account.get_game_biz()]
         act_id = data["act_id"]
