@@ -5,7 +5,7 @@ This Python script automates the daily check-in process for Hoyolab, allowing yo
 ### Features
 
 * **Automated Check-in:** Automatically checks in for supported games and claims daily rewards.
-* **Scheduled Check-in:** Check-ins are triggered between 05:00 and 22:00 UTC.
+* **Scheduled Check-in:** Check-ins are triggered between 00:00 and 05:00 local time.
 * **Discord Notifications:** Sends detailed check-in results to a Discord channel via webhook (optional).
 
 ### Prerequisites

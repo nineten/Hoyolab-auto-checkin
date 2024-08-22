@@ -6,6 +6,33 @@ from datetime import datetime, timedelta, timezone
 from log import logging
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
+GAME_DATA = {
+    "hk4e_global": {
+        "game_name": "Genshin Impact",
+        "main": "Traveler",
+        "act_id": "e202102251931481",
+        "info_url": "https://sg-hk4e-api.hoyolab.com/event/sol/info",
+        "reward_url": "https://sg-hk4e-api.hoyolab.com/event/sol/home",
+        "sign_url": "https://sg-hk4e-api.hoyolab.com/event/sol/sign"
+    },
+    "hkrpg_global": {
+        "game_name": "Honkai: Star Rail",
+        "main": "Trailblazer",
+        "act_id": "e202303301540311",
+        "info_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info",
+        "reward_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/home",
+        "sign_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/sign"
+    },
+    "nap_global": {
+        "game_name": "Zenless Zone Zero",
+        "main": "Phaethon",
+        "act_id": "e202406031448091",
+        "info_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/info",
+        "reward_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/home",
+        "sign_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/sign"
+    },
+}
+
 class GameAccount:
     def __init__(self, game_biz, region_name, game_uid, level, nickname, region, **kwargs):
         self.game_biz = game_biz
@@ -70,37 +97,10 @@ class HoyolabClient:
         return accounts
 
     def check_in(self, account):
-        game_data = {
-            "hk4e_global": {
-                "game_name": "Genshin Impact",
-                "main": "Traveller",
-                "act_id": "e202102251931481",
-                "info_url": "https://sg-hk4e-api.hoyolab.com/event/sol/info",
-                "reward_url": "https://sg-hk4e-api.hoyolab.com/event/sol/home",
-                "sign_url": "https://sg-hk4e-api.hoyolab.com/event/sol/sign"
-            },
-            "hkrpg_global": {
-                "game_name": "Honkai: Star Rail",
-                "main": "Trailblazer",
-                "act_id": "e202303301540311",
-                "info_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info",
-                "reward_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/home",
-                "sign_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/sign"
-            },
-            "nap_global": {
-                "game_name": "Zenless Zone Zero",
-                "main": "Phaethon",
-                "act_id": "e202406031448091",
-                "info_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/info",
-                "reward_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/home",
-                "sign_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/sign"
-            },
-        }
-
-        if account.game_biz not in game_data:
+        if account.game_biz not in GAME_DATA:
             raise Exception(f"Unsupported game")
 
-        data = game_data[account.game_biz]
+        data = GAME_DATA[account.game_biz]
         act_id = data["act_id"]
 
         logging.info("Fetch account detail from Hoyoverse ...")
@@ -175,19 +175,19 @@ def check_in(client, accounts, webhook_url):
             logging.error(f"Check-in failed for {account.nickname}: {e}")
 
 def wait():
-    now_utc = datetime.now(timezone(timedelta(0)).utc)
+    now_local = datetime.now()
 
-    start_time_utc = now_utc.replace(hour=5, minute=0, second=0, microsecond=0)
-    end_time_utc = now_utc.replace(hour=22, minute=0, second=0, microsecond=0)
+    start_time_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_time_local = now_local.replace(hour=5, minute=0, second=0, microsecond=0)
 
-    if start_time_utc <= now_utc <= end_time_utc:
-        next_check_in_time = now_utc + timedelta(hours=23)
-        wait_time = (next_check_in_time - now_utc).total_seconds()
-    elif now_utc < start_time_utc:
-        wait_time = (start_time_utc - now_utc).total_seconds()
+    if start_time_local <= now_local <= end_time_local:
+        next_check_in_time = now_local + timedelta(hours=23)
+        wait_time = (next_check_in_time - now_local).total_seconds()
+    elif now_local < start_time_local:
+        wait_time = (start_time_local - now_local).total_seconds()
     else:
-        next_check_in_time = (now_utc + timedelta(days=1)).replace(hour=5, minute=0, second=0, microsecond=0)
-        wait_time = (next_check_in_time - now_utc).total_seconds()
+        next_check_in_time = (now_local + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        wait_time = (next_check_in_time - now_local).total_seconds()
 
     random_minutes = random.randint(0, 59)
     random_seconds = random.randint(0, 59)
