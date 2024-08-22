@@ -1,8 +1,5 @@
 import requests
 import os
-import random
-import time
-from datetime import datetime, timedelta, timezone
 from log import logging
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from dotenv import load_dotenv
