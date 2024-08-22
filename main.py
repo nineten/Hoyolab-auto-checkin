@@ -1,8 +1,10 @@
-import requests
 import os
-from log import logging
-from discord_webhook import DiscordWebhook, DiscordEmbed
+
+import requests
+from discord_webhook import DiscordEmbed, DiscordWebhook
 from dotenv import load_dotenv
+
+from log import logging
 
 load_dotenv()
 
@@ -90,7 +92,7 @@ class Reward:
 
     def get_icon(self):
         return self._icon
-    
+
     def get_game_name(self):
         return self.game_name
 
