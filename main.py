@@ -75,9 +75,9 @@ class HoyolabClient:
                 "game_name": "Genshin Impact",
                 "main": "Traveller",
                 "act_id": "e202102251931481",
-                "info_url": "https://hk4e-api-os.mihoyo.com/event/sol/info",
-                "reward_url": "https://hk4e-api-os.mihoyo.com/event/sol/home",
-                "sign_url": "https://hk4e-api-os.mihoyo.com/event/sol/sign"
+                "info_url": "https://sg-hk4e-api.hoyolab.com/event/sol/info",
+                "reward_url": "https://sg-hk4e-api.hoyolab.com/event/sol/home",
+                "sign_url": "https://sg-hk4e-api.hoyolab.com/event/sol/sign"
             },
             "hkrpg_global": {
                 "game_name": "Honkai: Star Rail",
