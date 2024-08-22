@@ -86,7 +86,15 @@ class HoyolabClient:
                 "info_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info",
                 "reward_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/home",
                 "sign_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/sign"
-            }
+            },
+            "nap_global": {
+                "game_name": "Zenless Zone Zero",
+                "main": "Phaethon",
+                "act_id": "e202406031448091",
+                "info_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/info",
+                "reward_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/home",
+                "sign_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/sign"
+            },
         }
 
         if account.game_biz not in game_data:
