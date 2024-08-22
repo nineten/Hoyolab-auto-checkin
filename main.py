@@ -9,7 +9,7 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 class GameAccount:
     def __init__(self, game_biz, region_name, game_uid, level, nickname, region, **kwargs):
         self.game_biz = game_biz
-        self.region_name = region_name
+        self.region_name = region_name.split(" ")[0]
         self.game_uid = game_uid
         self.level = level
         self.nickname = nickname
@@ -142,7 +142,7 @@ def send_discord_notification(webhook_url, account, reward):
     embed.add_embed_field(name="UID", value=account.game_uid)
     embed.add_embed_field(name="Level", value=account.level)
     embed.add_embed_field(name="Name", value=account.nickname)
-    embed.add_embed_field(name="Server", value=account.region)
+    embed.add_embed_field(name="Server", value=account.region_name)
     embed.add_embed_field(name="Reward", value=f"{reward.name} x {reward.cnt}")
     embed.set_footer(text="Hoyolab Auto Check-in")
     embed.set_timestamp()
@@ -212,6 +212,6 @@ def run():
             accounts = client.get_game_accounts()
             check_in(client, accounts, webhook_url)
         
-        
+        wait()
 
 run()
