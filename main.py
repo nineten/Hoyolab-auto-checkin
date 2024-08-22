@@ -155,7 +155,7 @@ def send_discord_notification(webhook_url, account, reward):
     except Exception as e:
         logging.error(f"Failed to send Discord notification: {e}")
 
-def check_in_and_wait(client, accounts, webhook_url):
+def check_in(client, accounts, webhook_url):
     for account in accounts:
         try:
             client.check_in(account)
@@ -164,6 +164,7 @@ def check_in_and_wait(client, accounts, webhook_url):
         except Exception as e:
             logging.error(f"Check-in failed for {account.nickname}: {e}")
 
+def wait():
     now_utc = datetime.now(timezone(timedelta(0)).utc)
 
     start_time_utc = now_utc.replace(hour=5, minute=0, second=0, microsecond=0)
@@ -209,6 +210,8 @@ def run():
                 continue
 
             accounts = client.get_game_accounts()
-            check_in_and_wait(client, accounts, webhook_url)
+            check_in(client, accounts, webhook_url)
+        
+        
 
 run()
