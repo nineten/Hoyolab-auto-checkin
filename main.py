@@ -27,7 +27,7 @@ GAME_DATA = {
     },
     "nap_global": {
         "game_name": "Zenless Zone Zero",
-        "main": "Phaethon",
+        "main": "Proxy",
         "act_id": "e202406031448091",
         "info_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/info",
         "reward_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/home",
