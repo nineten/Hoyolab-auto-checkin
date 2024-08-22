@@ -73,6 +73,7 @@ class HoyolabClient:
         game_data = {
             "hk4e_global": {
                 "game_name": "Genshin Impact",
+                "main": "Traveller",
                 "act_id": "e202102251931481",
                 "info_url": "https://hk4e-api-os.mihoyo.com/event/sol/info",
                 "reward_url": "https://hk4e-api-os.mihoyo.com/event/sol/home",
@@ -80,6 +81,7 @@ class HoyolabClient:
             },
             "hkrpg_global": {
                 "game_name": "Honkai: Star Rail",
+                "main": "Trailblazer",
                 "act_id": "e202303301540311",
                 "info_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info",
                 "reward_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/home",
@@ -125,7 +127,7 @@ class HoyolabClient:
                 logging.error(f"Check-in request failed for {account.nickname}: {e}")
                 return
         else:
-            logging.info("You've already checked in today.")
+            logging.info(f"{data['main']}, You've already checked in today.")
 
 
 def send_discord_notification(webhook_url, account, reward):
