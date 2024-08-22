@@ -72,7 +72,7 @@ This Python script automates the daily check-in process for Hoyolab, allowing yo
    python main.py
    ```
 
-The script will start checking in for your linked Genshin Impact and Honkai: Star Rail accounts. If a Discord webhook URL is provided, you will receive notifications in your Discord channel.
+The script will start checking in for your linked Genshin Impact, Honkai: Star Rail and Zenless Zone Zero accounts. If a Discord webhook URL is provided, you will receive notifications in your Discord channel.
 
 ### Important Notes
 
