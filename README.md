@@ -77,7 +77,7 @@ The script will start checking in for your linked Genshin Impact and Honkai: Sta
 ### Important Notes
 
 * **Cookie Security:** Keep your Hoyolab cookie safe and secure. Do not share it with anyone.
-* **Unsupported Games:** The script currently supports Genshin Impact and Honkai: Star Rail. Other games may not work.
+* **Unsupported Games:** The script currently supports Genshin Impact, Honkai: Star Rail and Zenless Zone Zero.
 * **API Changes:** Hoyolab's API may change in the future, potentially breaking the script. Updates may be required to keep it functional.
 
 ### Disclaimer
