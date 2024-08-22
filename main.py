@@ -231,28 +231,6 @@ def check_in(client, accounts, webhook_url):
         except Exception as e:
             logging.error(f"Check-in failed for {account.get_nickname()}: {e}")
 
-def wait():
-    now_local = datetime.now()
-
-    start_time_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
-    end_time_local = now_local.replace(hour=5, minute=0, second=0, microsecond=0)
-
-    if start_time_local <= now_local <= end_time_local:
-        next_check_in_time = now_local + timedelta(hours=23)
-        wait_time = (next_check_in_time - now_local).total_seconds()
-    elif now_local < start_time_local:
-        wait_time = (start_time_local - now_local).total_seconds()
-    else:
-        next_check_in_time = (now_local + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-        wait_time = (next_check_in_time - now_local).total_seconds()
-
-    random_minutes = random.randint(0, 59)
-    random_seconds = random.randint(0, 59)
-    wait_time += random_minutes * 60 + random_seconds
-
-    logging.info(f"Waiting for {wait_time} seconds before next check-in...")
-    time.sleep(wait_time)
-
 def run():
     logging.info("Hoyolab Auto Daily Check-in Starting ...")
 
@@ -264,25 +242,22 @@ def run():
 
     cookies = cookie.split('#')
 
-    while True:
-        for i, cookie in enumerate(cookies):
-            logging.info(f"Processing account {i + 1} of {len(cookies)}")
+    for i, cookie in enumerate(cookies):
+        logging.info(f"Processing account {i + 1} of {len(cookies)}")
 
-            client = HoyolabClient(cookie)
+        client = HoyolabClient(cookie)
 
-            try:
-                client.verify_cookie()
-            except Exception as e:
-                logging.error(f"Invalid cookie for account {i + 1}: {e}")
-                continue
-            
-            try:
-                accounts = client.get_game_accounts()
-                check_in(client, accounts, webhook_url)
-            except Exception as e:
-                logging.error(f"Check-in failed: {e}")
-                continue
-        
-        wait()
+        try:
+            client.verify_cookie()
+        except Exception as e:
+            logging.error(f"Invalid cookie for account {i + 1}: {e}")
+            continue
+
+        try:
+            accounts = client.get_game_accounts()
+            check_in(client, accounts, webhook_url)
+        except Exception as e:
+            logging.error(f"Check-in failed: {e}")
+            continue
 
 run()
