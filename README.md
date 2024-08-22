@@ -16,17 +16,14 @@ This Python script automates the daily check-in process for Hoyolab, allowing yo
 
 1. **Obtain Your Hoyolab Cookie:**
 
-   * Open your web browser and navigate to the Hoyolab Daily Check-in page
+   * Open your web browser and navigate to the Hoyolab Daily Check-in page.
    * Log in to your Hoyolab account.
    * Open the browser's developer tools (usually by pressing F12).
-   * Go to the "Console" tab.
-   * Paste the following code into the console and press Enter:
-
-     ```javascript
-     document.cookie
-     ```
-
-   * Copy the entire output. This is your Hoyolab cookie.
+   * **Click the "Check-in" button to claim your daily reward.**
+   * Go to the "Network" tab in the developer tools.
+   * Look for a request to a URL that contains the word "sign" (e.g., `https://sg-hk4e-api.hoyolab.com/event/sol/sign`).
+   * Click on that request to view its details.
+   * In the "Request Headers" section, find the `Cookie` header and copy its entire value. This is your Hoyolab cookie. 
 
 2. **Get Your User Agent:**
 
