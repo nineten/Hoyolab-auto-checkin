@@ -13,6 +13,7 @@ GAME_DATA = {
         "game_name": "Genshin Impact",
         "main": "Traveler",
         "act_id": "e202102251931481",
+        "signgame": "gi",
         "info_url": "https://sg-hk4e-api.hoyolab.com/event/sol/info",
         "reward_url": "https://sg-hk4e-api.hoyolab.com/event/sol/home",
         "sign_url": "https://sg-hk4e-api.hoyolab.com/event/sol/sign"
@@ -20,6 +21,7 @@ GAME_DATA = {
     "hkrpg_global": {
         "game_name": "Honkai: Star Rail",
         "main": "Trailblazer",
+        "signgame": "hsr",
         "act_id": "e202303301540311",
         "info_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info",
         "reward_url": "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/home",
@@ -28,6 +30,7 @@ GAME_DATA = {
     "nap_global": {
         "game_name": "Zenless Zone Zero",
         "main": "Proxy",
+        "signgame": "zzz",
         "act_id": "e202406031448091",
         "info_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/info",
         "reward_url": "https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/home",
@@ -101,9 +104,13 @@ class ApiClient:
         self.session = requests.Session()
         self.headers = headers
 
-    def _request(self, url):
+    def _request(self, url, additional_headers=None):
         try:
-            response = self.session.get(url, headers=self.headers)
+            headers = self.headers.copy()
+            if additional_headers:
+                headers.update(additional_headers)
+
+            response = self.session.get(url, headers=headers)
             response.raise_for_status()
             data = response.json()
 
@@ -134,7 +141,8 @@ class HoyolabClient(ApiClient):
             "User-Agent": os.environ.get("USER_AGENT", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47"),
             "Referer": "https://act.hoyolab.com/",
             "Origin": "https://act.hoyolab.com/",
-            "Accept-Encoding": "gzip, deflate, br"
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application.json;charset=UTF-8"
         }
         super().__init__(headers)
         self.cookie = cookie
@@ -161,14 +169,17 @@ class HoyolabClient(ApiClient):
 
         data = GAME_DATA[account.get_game_biz()]
         act_id = data["act_id"]
+        additional_headers = {
+            "x-rpc-signgame": data["signgame"]
+        }
 
         logging.info("Fetch account detail from Hoyoverse ...")
-        info_res = self._request(f"{data['info_url']}?act_id={act_id}")
+        info_res = self._request(f"{data['info_url']}?act_id={act_id}", additional_headers)
         if not self._check_json_format(info_res, data["info_url"], ["data"]):
             return
 
         logging.info("Fetch daily login reward from Hoyoverse ..")
-        rewards_res = self._request(f"{data['reward_url']}?act_id={act_id}")
+        rewards_res = self._request(f"{data['reward_url']}?act_id={act_id}", additional_headers)
         if not self._check_json_format(rewards_res, data["reward_url"], ["data", ["awards"]]):
             return
 
@@ -178,7 +189,9 @@ class HoyolabClient(ApiClient):
         if not info.is_signed_in():
             try:
                 logging.info("Sign-in to server and claim reward.")
-                sign_res = self.session.post(f"{data['sign_url']}?act_id={act_id}", headers=self.headers)
+                headers = self.headers.copy()
+                headers.update(additional_headers)
+                sign_res = self.session.post(f"{data['sign_url']}?act_id={act_id}", headers=headers)
                 sign_res.raise_for_status()
                 sign_res_json = sign_res.json()
                 if "retcode" not in sign_res_json or sign_res_json["retcode"] != 0:
